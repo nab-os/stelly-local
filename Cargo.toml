@@ -1,0 +1,38 @@
+[package]
+name = "stelly-local"
+version = "0.1.0"
+edition = "2021"
+description = "A folder of music files as a Stelly music provider"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/nab-os/stelly-local"
+
+[[bin]]
+name = "stelly-local"
+path = "src/main.rs"
+
+[dependencies]
+# The protocol this answers in; its types only, no client.
+stelly-provider = { git = "https://github.com/nab-os/stelly-provider", tag = "v0.1.0" }
+
+anyhow = "1"
+argh = "0.1.19"
+axum = "0.8"
+# Signing stream URLs, so a token-guarded folder can still hand them out.
+hmac = "0.13"
+sha2 = "0.11"
+# Tags, durations and embedded covers, for every format the folder holds.
+lofty = "0.25.4"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1.53.1", features = ["rt-multi-thread", "macros", "signal", "sync", "net", "time", "fs"] }
+# Files served with byte ranges, so players can seek.
+tower = "0.5"
+tower-http = { version = "0.6", features = ["fs"] }
+walkdir = "2.5.0"
+
+[dev-dependencies]
+stelly-provider = { git = "https://github.com/nab-os/stelly-provider", tag = "v0.1.0", features = ["async"] }
+ureq = "3"
+
+[profile.release]
+lto = true
